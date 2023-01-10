@@ -1,0 +1,34 @@
+version: "3.7"
+
+services:
+  db-mysql:
+    image: mysql:5.7
+    platform: linux/amd64
+    environment:
+      MYSQL_DATABASE: account
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+    networks:
+      - app-db-network
+
+  account-app:
+    platform: linux/amd64
+    build:
+      context: ./
+      args:
+        ENVIRONMENT: real
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db-mysql
+    networks:
+      - app-db-network
+
+networks:
+  app-db-network:
+    driver: bridge

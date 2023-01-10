@@ -1,0 +1,65 @@
+spring:
+  profiles:
+    default: local
+    active:
+      - "@active.profile@"
+---
+spring:
+  profiles:
+    group:
+      develop: "developDB, common"
+---
+
+spring:
+  profiles:
+    group:
+      real: "realDB, common"
+---
+server:
+  port: 8080
+
+spring:
+  config:
+    activate:
+      on-profile: develop
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/account
+    username: root
+    password: 1234
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+env:
+  value: develop
+
+---
+server:
+  port: 8080
+
+spring:
+  config:
+    activate:
+      on-profile: real
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://db-mysql:3306/account
+    username: user
+    password: user
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+env:
+  value: real
