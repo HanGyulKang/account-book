@@ -29,15 +29,23 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    runtimeOnly 'mysql:mysql-connector-java'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    // test시에도 query dsl 모델을 사용하기 위해서는 해당 옵션을 추가 해줘야 한다.
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    runtimeOnly 'mysql:mysql-connector-java'
     testImplementation 'org.springframework.security:spring-security-test'
+
+    // Query 로그 ?에 넘어온 Parameter를 직접 찍어서 보여주는 외부 라이브러리 : 성능 검증을 반드시 거친 후 사용해야 함
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
 
     // jwt token 생성 library
     implementation 'com.auth0:java-jwt:4.2.1'
@@ -47,9 +55,6 @@ dependencies {
     // querydsl 추가
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
-    // test시에도 query dsl 모델을 사용하기 위해서는 해당 옵션을 추가 해줘야 한다.
-    testCompileOnly 'org.projectlombok:lombok'
-    testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
 tasks.named('test') {

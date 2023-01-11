@@ -7,7 +7,7 @@ create table user
     password varchar(255) null,
     roles    varchar(255) null,
     token    varchar(255) null
-);
+) engine=InnoDB default charset=utf8;
 
 create index index_user_username
     on user (username);
@@ -16,19 +16,19 @@ create index index_user_username
 # account_book table : 가계부 테이블
 create table account_book
 (
-    account_book_id        bigint auto_increment
+    account_book_id bigint auto_increment
         primary key,
-    amount                 decimal(19, 2) default 0.00              null,
-    deleted                int            default 0                 null,
-    memo                   varchar(255)                             null,
-    record_date            datetime       default CURRENT_TIMESTAMP not null,
-    account_book_detail_id bigint                                   null,
-    user_id                bigint                                   null,
-    constraint FKd28tps1al2m2ltldpu68oxb27
-        foreign key (account_book_detail_id) references account_book_detail (account_book_detail_id),
+    amount          decimal(19, 2) default 0.00              null,
+    deleted         int            default 0                 null,
+    memo            varchar(255)                             null,
+    record_date     datetime       default CURRENT_TIMESTAMP null,
+    user_id         bigint                                   null,
     constraint FKkquwu309cpmhm08oyl36f7wp2
         foreign key (user_id) references user (user_id)
-);
+) engine=InnoDB default charset=utf8;
+
+create index index_account_book_user_id_deleted_record_date
+    on account_book (user_id, deleted, record_date);
 
 
 # account_book_detail table : 가계부 상세 테이블
@@ -36,7 +36,11 @@ create table account_book_detail
 (
     account_book_detail_id bigint auto_increment
         primary key,
-    payment_date           datetime     null,
-    payment_types          varchar(255) null,
-    store_name             varchar(255) null
-);
+    amount                 decimal(19, 2) null,
+    payment_date           datetime       null,
+    payment_types          varchar(255)   null,
+    store_name             varchar(255)   null,
+    account_book_id        bigint         null,
+    constraint FK265acjn5kf2ov94pa04sce8lh
+        foreign key (account_book_id) references account_book (account_book_id)
+) engine=InnoDB default charset=utf8;

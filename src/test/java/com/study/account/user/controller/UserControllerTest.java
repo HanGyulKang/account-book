@@ -40,13 +40,14 @@ class UserControllerTest {
     @Rollback
     @DisplayName("/apis/v1/signup : 회원가입")
     void signupWithEmailAndPassword() {
+        // 테스트 데이터 준비
         UserDto params = UserDto
                 .builder()
                 .email(email)
                 .password(password)
                 .build();
 
-        // 회원가입
+        // 회원가입 테스트 결과
         UserResponseDto response = userService.signupWithEmailAndPassword(params);
         assertThat(HttpStatus.OK.value()).isEqualTo(response.getResultCode());
     }
@@ -60,13 +61,10 @@ class UserControllerTest {
                 .email(email)
                 .password(password)
                 .build();
-        // 회원 가입
+        // 테스트 데이터 준비
         userService.signupWithEmailAndPassword(params);
-
-        // 정보 조회
         User user = userRepository.findByUsername(email);
 
-        // 테스트용 토큰 생성
         String jwtToken = JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
@@ -74,13 +72,12 @@ class UserControllerTest {
                 .withClaim(JwtProperties.USER_NAME, user.getUsername())
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
 
-        // 테스트용 토큰 저장
+        // 테스트 토큰 저장
         user.saveUserToken(jwtToken);
         userRepository.save(user);
 
-        // 로그아웃 실행
+        // 로그아웃 테스트 결과
         UserResponseDto logout = userService.logout(user.getId());
-        System.out.println(logout.toString());
         assertThat(logout.getResultCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
     }
 }

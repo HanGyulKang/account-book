@@ -4,6 +4,7 @@ import com.study.account.common.enums.PaymentTypes;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -19,8 +20,10 @@ public class AccountBookDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_book_detail_id")
     private Long id;
-    @OneToOne(mappedBy = "accountBookDetail", cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_book_id")
     private AccountBook accountBook;
+    private BigInteger amount;
     private String storeName;
     @Enumerated(EnumType.STRING)
     private PaymentTypes paymentTypes;

@@ -1,13 +1,11 @@
 package com.study.account.apis.accountBook.dto;
 
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Setter
-@ToString
-@NoArgsConstructor
+import java.math.BigInteger;
+
+@Data
 public class AccountBookDto {
-
-
+    private BigInteger amount;
+    private String memo;
 }

@@ -6,6 +6,8 @@ import javax.persistence.*;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -26,8 +28,8 @@ public class AccountBook {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_book_detail_id")
-    private AccountBookDetail accountBookDetail;
+    @OneToMany(mappedBy = "accountBook", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<AccountBookDetail> accountBookDetail = new ArrayList<>();
 
 }

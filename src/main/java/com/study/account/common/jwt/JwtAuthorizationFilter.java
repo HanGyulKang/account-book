@@ -67,17 +67,19 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 log.info("verify user toekn : {}", username);
                 User user = userRepository.findByUsername(username);
 
-                // 로그인할 때 디비에 저장한 토큰과 비교
-                if(StringUtils.hasText(user.getToken()) && jwtToken.equals(user.getToken())) {
-                    PrincipalDetails principalDetails = new PrincipalDetails(user);
-                    // Jwt Token 서명이 정상적으로 되었기 때문에 임의 인증 객체 생성(로그인을 위함)
-                    Authentication authentication = new UsernamePasswordAuthenticationToken(
-                            principalDetails
-                            , null
-                            , principalDetails.getAuthorities());
+                if(user != null) {
+                    // 로그인할 때 디비에 저장한 토큰과 비교
+                    if(StringUtils.hasText(user.getToken()) && jwtToken.equals(user.getToken())) {
+                        PrincipalDetails principalDetails = new PrincipalDetails(user);
+                        // Jwt Token 서명이 정상적으로 되었기 때문에 임의 인증 객체 생성(로그인을 위함)
+                        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                                principalDetails
+                                , null
+                                , principalDetails.getAuthorities());
 
-                    // security session에 강제로 인증 정보 저장
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                        // security session에 강제로 인증 정보 저장
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    }
                 }
             }
 

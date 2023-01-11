@@ -1,7 +1,5 @@
 package com.study.account.common.enums;
 
-import org.hibernate.type.EnumType;
-
 public enum UserEnum {
     SUCCESS_SIGNUP(200, "가입 성공"),
     FAILED_SIGNUP(400, "가입 실패"),
