@@ -23,6 +23,7 @@ public class PrincipalDetails implements UserDetails {
         user.getRoleList().forEach(res -> {
             authorities.add(() -> res);
         });
+
         return authorities;
     }
 

@@ -2,6 +2,8 @@ package com.study.account.common.config;
 
 import com.study.account.common.filter.CommonFilter;
 import com.study.account.common.jwt.JwtAuthenticationFilter;
+import com.study.account.common.jwt.JwtAuthorizationFilter;
+import com.study.account.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,6 +19,7 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CorsFilter corsFilter;
+    private final UserRepository userRepository;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -30,14 +33,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(corsFilter) // cors 정책에서 벗어남
                 .formLogin().disable()
                 .httpBasic().disable()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+                .addFilter(new JwtAuthenticationFilter(authenticationManager())) // 로그인 검증(id, pw) 필터
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))  // 인증, 권한 검증 필터
                 .authorizeRequests()
-                .antMatchers("/apis/v1/user/signup")
-                    .permitAll()
-                .antMatchers("/apis/v1/user/**")
-                    .access("hasRole('USER')")
-                .antMatchers("/apis/v1/account/**")
-                    .access("hasRole('USER')")
+                .antMatchers("/apis/v1/user/signup").permitAll()
+                .antMatchers("/apis/v1/user/**").access("hasRole('ROLE_USER')")
+                .antMatchers("/apis/v1/account/**").access("hasRole('ROEL_USER')")
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()

@@ -20,22 +20,7 @@ public class CommonFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
-        if("/apis/v1/user/signup".equals(req.getRequestURI())) {
-           chain.doFilter(req, res);
-        } else {
-            if(req.getMethod().equals("POST")) {
-                String authorization = req.getHeader("Authorization");
-
-                if(authorization.equals("test token")) {
-                    chain.doFilter(req, res);
-                } else {
-                    PrintWriter outPrintWriter = res.getWriter();
-                    outPrintWriter.println("not authenticated");
-                }
-            } else {
-                chain.doFilter(req, res);
-            }
-        }
+        chain.doFilter(req, res);
     }
 
     @Override

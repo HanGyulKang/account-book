@@ -1,5 +1,5 @@
 package com.study.account.common.enums;
 
 public enum UserRole {
-    GUEST, USER
+    ROLE_GUEST, ROLE_USER
 }
