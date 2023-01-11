@@ -1,0 +1,41 @@
+# user table
+create table account.user
+(
+    user_id  bigint auto_increment
+        primary key,
+    password varchar(255) null,
+    roles    varchar(255) null,
+    username varchar(255) null
+);
+
+create index index_user_username
+    on account.user (username);
+
+
+# account_book table
+create table account.account_book
+(
+    account_book_id        bigint auto_increment
+        primary key,
+    amount                 decimal(19, 2) null,
+    deleted                int            null,
+    memo                   varchar(255)   null,
+    record_date            datetime       null,
+    account_book_detail_id bigint         null,
+    user_id                bigint         null,
+    constraint FKd28tps1al2m2ltldpu68oxb27
+        foreign key (account_book_detail_id) references account.account_book_detail (account_book_detail_id),
+    constraint FKkquwu309cpmhm08oyl36f7wp2
+        foreign key (user_id) references account.user (user_id)
+);
+
+
+# account_book_detail table
+create table account.account_book_detail
+(
+    account_book_detail_id bigint auto_increment
+        primary key,
+    payment_date           datetime     null,
+    payment_types          varchar(255) null,
+    store_name             varchar(255) null
+);

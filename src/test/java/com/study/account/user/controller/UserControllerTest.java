@@ -29,7 +29,7 @@ class UserControllerTest {
     @Transactional
     @Rollback
     void signupWithEmailAndPassword() {
-        String email = "gang6607@gmail.com";
+        String email = "test@gmail.com";
         String password = "study123";
 
         UserDto.In params = UserDto.In

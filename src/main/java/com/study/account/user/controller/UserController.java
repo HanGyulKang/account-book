@@ -1,5 +1,6 @@
 package com.study.account.user.controller;
 
+import com.study.account.common.util.SecurityUtil;
 import com.study.account.user.dto.UserDto;
 import com.study.account.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,5 +27,11 @@ public class UserController {
         } else {
             return new ResponseEntity<>(out, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/userId")
+    public String getUserId() {
+        String userId = SecurityUtil.getUserId();
+        return userId;
     }
 }

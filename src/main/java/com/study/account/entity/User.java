@@ -1,7 +1,9 @@
 package com.study.account.entity;
 
 import com.study.account.common.enums.UserRole;
+import com.sun.istack.NotNull;
 import lombok.*;
+import org.hibernate.annotations.Comment;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "user", indexes = @Index(name = "index_user_username", columnList = "username"))
 public class User {
 
     @Id

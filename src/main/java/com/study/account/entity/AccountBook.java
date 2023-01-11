@@ -23,10 +23,10 @@ public class AccountBook {
     private String memo;
     private Integer deleted;
     private LocalDateTime recordDate;
-    @ManyToOne
-    @JoinColumn(name = "uuid")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_book_detail_id")
     private AccountBookDetail accountBookDetail;
 

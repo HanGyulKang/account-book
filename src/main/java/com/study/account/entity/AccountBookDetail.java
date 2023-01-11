@@ -19,7 +19,7 @@ public class AccountBookDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_book_detail_id")
     private Long id;
-    @OneToOne(mappedBy = "accountBookDetail", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "accountBookDetail", cascade = CascadeType.ALL)
     private AccountBook accountBook;
     private String storeName;
     @Enumerated(EnumType.STRING)
