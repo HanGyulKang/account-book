@@ -1,17 +1,16 @@
 package com.study.account.common.config;
 
+import com.study.account.apis.user.service.UserService;
 import com.study.account.common.filter.CommonFilter;
 import com.study.account.common.jwt.JwtAuthenticationFilter;
 import com.study.account.common.jwt.JwtAuthorizationFilter;
-import com.study.account.user.repository.UserRepository;
+import com.study.account.apis.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.filter.CorsFilter;
 
@@ -35,12 +34,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(corsFilter) // cors 정책에서 벗어남
                 .formLogin().disable()
                 .httpBasic().disable()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager())) // 로그인 검증(id, pw) 필터
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))  // 인증, 권한 검증 필터
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), userRepository)) // 인증 : 로그인 검증(id, pw) 필터
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))  // 인가 : 권한 필터
                 .authorizeRequests()
                 .antMatchers("/apis/v1/user/signup").permitAll()
-                .antMatchers("/apis/v1/user/**").access("hasRole('ROLE_USER')")
-                .antMatchers("/apis/v1/account/**").access("hasRole('ROEL_USER')")
+                .antMatchers("/apis/v1/**").access("hasRole('ROLE_USER')")
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()

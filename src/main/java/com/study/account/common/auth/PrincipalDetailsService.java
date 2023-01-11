@@ -1,7 +1,7 @@
 package com.study.account.common.auth;
 
 import com.study.account.entity.User;
-import com.study.account.user.repository.UserRepository;
+import com.study.account.apis.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,6 +18,10 @@ public class PrincipalDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
-        return new PrincipalDetails(user);
+        if(user != null) {
+            return new PrincipalDetails(user);
+        } else {
+            throw new UsernameNotFoundException("user not found");
+        }
     }
 }

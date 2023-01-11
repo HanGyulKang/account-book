@@ -4,15 +4,15 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.study.account.common.auth.PrincipalDetails;
+import com.study.account.common.util.SecurityUtil;
 import com.study.account.entity.User;
-import com.study.account.user.repository.UserRepository;
+import com.study.account.apis.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.util.StringUtils;
 
@@ -61,20 +61,24 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 log.error(e.getMessage());
             }
 
+
             if(StringUtils.hasText(username)) {
                 // 정상적으로 서명 된 것을 검증
                 log.info("verify user toekn : {}", username);
                 User user = userRepository.findByUsername(username);
 
-                PrincipalDetails principalDetails = new PrincipalDetails(user);
-                // Jwt Token 서명이 정상적으로 되었기 때문에 임의 인증 객체 생성(로그인을 위함)
-                Authentication authentication = new UsernamePasswordAuthenticationToken(
-                        principalDetails
-                        , null
-                        , principalDetails.getAuthorities());
+                // 로그인할 때 디비에 저장한 토큰과 비교
+                if(StringUtils.hasText(user.getToken()) && jwtToken.equals(user.getToken())) {
+                    PrincipalDetails principalDetails = new PrincipalDetails(user);
+                    // Jwt Token 서명이 정상적으로 되었기 때문에 임의 인증 객체 생성(로그인을 위함)
+                    Authentication authentication = new UsernamePasswordAuthenticationToken(
+                            principalDetails
+                            , null
+                            , principalDetails.getAuthorities());
 
-                // security session에 강제로 인증 정보 저장
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                    // security session에 강제로 인증 정보 저장
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
             }
 
             chain.doFilter(req, res);

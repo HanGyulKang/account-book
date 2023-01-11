@@ -1,8 +1,8 @@
-package com.study.account.user.controller;
+package com.study.account.apis.user.controller;
 
+import com.study.account.apis.user.dto.UserDto;
+import com.study.account.apis.user.service.UserService;
 import com.study.account.common.util.SecurityUtil;
-import com.study.account.user.dto.UserDto;
-import com.study.account.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,9 +29,14 @@ public class UserController {
         }
     }
 
+    @GetMapping("logout")
+    public ResponseEntity<UserDto.Out> logout() {
+        UserDto.Out out = userService.logout(SecurityUtil.getUserId());
+        return new ResponseEntity<>(out, HttpStatus.NO_CONTENT);
+    }
+
     @GetMapping("/userId")
-    public String getUserId() {
-        String userId = SecurityUtil.getUserId();
-        return userId;
+    public Long getUserId() {
+        return SecurityUtil.getUserId();
     }
 }

@@ -1,4 +1,4 @@
-package com.study.account.user.dto;
+package com.study.account.apis.user.dto;
 
 import lombok.Builder;
 import lombok.Getter;

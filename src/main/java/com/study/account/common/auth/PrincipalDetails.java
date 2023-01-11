@@ -24,7 +24,13 @@ public class PrincipalDetails implements UserDetails {
             authorities.add(() -> res);
         });
 
+
+
         return authorities;
+    }
+
+    public Long getUserId() {
+        return user.getId();
     }
 
     @Override

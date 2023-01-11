@@ -1,15 +1,17 @@
-package com.study.account.user.service.impl;
+package com.study.account.apis.user.service.impl;
 
+import com.study.account.apis.user.dto.UserDto;
+import com.study.account.apis.user.service.UserService;
 import com.study.account.common.enums.UserRole;
+import com.study.account.common.jwt.JwtProperties;
 import com.study.account.entity.User;
-import com.study.account.user.dto.UserDto;
-import com.study.account.user.repository.UserRepository;
-import com.study.account.user.service.UserService;
+import com.study.account.apis.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 @Slf4j
@@ -19,6 +21,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private final EntityManager em;
 
     @Override
     @Transactional
@@ -39,9 +43,9 @@ public class UserServiceImpl implements UserService {
                 .roles(UserRole.ROLE_USER)
                 .build();
 
-        User save = userRepository.save(user);
+        User checkSave = userRepository.save(user);
 
-        if(save != null) {
+        if(checkSave != null) {
             return UserDto.Out
                     .builder()
                     .resultCode(200)
@@ -54,5 +58,18 @@ public class UserServiceImpl implements UserService {
                     .resultMessage("가입 실패")
                     .build();
         }
+    }
+
+    @Override
+    @Transactional
+    public UserDto.Out logout(Long userId) {
+        User user = em.find(User.class, userId);
+        user.saveUserToken(JwtProperties.EMPTY_STRING);
+
+        return UserDto.Out
+                .builder()
+                .resultCode(0)
+                .resultMessage("로그아웃 완료")
+                .build();
     }
 }

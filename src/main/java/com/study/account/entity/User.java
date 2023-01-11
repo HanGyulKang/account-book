@@ -25,6 +25,7 @@ public class User {
     private Long id;
     private String username;
     private String password;
+    private String token;
     @Enumerated(EnumType.STRING)
     private UserRole roles;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -37,5 +38,9 @@ public class User {
         }
 
         return new ArrayList<>();
+    }
+
+    public void saveUserToken(String token) {
+        this.token = token;
     }
 }

@@ -36,7 +36,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
@@ -44,7 +44,7 @@ spring:
 
 logging:
   level:
-    org.hibernate.SQL: debug
+    org.hibernate.SQL: info
     org.hibernate.type: trace
 
 env:
@@ -77,6 +77,11 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+logging:
+  level:
+    org.hibernate.SQL: error
+    org.hibernate.type: trace
 
 env:
   value: real

@@ -3,13 +3,14 @@ create table account.user
 (
     user_id  bigint auto_increment
         primary key,
+    username varchar(255) null,
     password varchar(255) null,
     roles    varchar(255) null,
-    username varchar(255) null
+    token    varchar(255) null
 );
 
 create index index_user_username
-    on account.user (username);
+    on user (username);
 
 
 # account_book table
