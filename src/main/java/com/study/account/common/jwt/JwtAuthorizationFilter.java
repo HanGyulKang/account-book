@@ -52,13 +52,18 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
             jwtToken = jwtToken.replace(JwtProperties.BEARER, "");
 
-            Map<String, Claim> claims
-                    = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(jwtToken).getClaims();
-            String username = claims.get(JwtProperties.USER_NAME).asString();
-            log.info("verify user toekn : {}", username);
+            Map<String, Claim> claims;
+            String username = "";
+            try {
+                claims = JWT.require(Algorithm.HMAC512(JwtProperties.SECRET)).build().verify(jwtToken).getClaims();
+                username = claims.get(JwtProperties.USER_NAME).asString();
+            } catch (Exception e) {
+                log.error(e.getMessage());
+            }
 
             if(StringUtils.hasText(username)) {
                 // 정상적으로 서명 된 것을 검증
+                log.info("verify user toekn : {}", username);
                 User user = userRepository.findByUsername(username);
 
                 PrincipalDetails principalDetails = new PrincipalDetails(user);
