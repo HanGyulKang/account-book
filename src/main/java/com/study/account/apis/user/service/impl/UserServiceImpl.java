@@ -1,7 +1,10 @@
 package com.study.account.apis.user.service.impl;
 
+import com.study.account.apis.user.dto.UserResponseDto;
 import com.study.account.apis.user.dto.UserDto;
 import com.study.account.apis.user.service.UserService;
+import com.study.account.apis.user.util.ResponseUtil;
+import com.study.account.common.enums.UserEnum;
 import com.study.account.common.enums.UserRole;
 import com.study.account.common.jwt.JwtProperties;
 import com.study.account.entity.User;
@@ -21,23 +24,18 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
     private final EntityManager em;
+    private static ResponseUtil responseUtil = new ResponseUtil();
 
     @Override
     @Transactional
-    public UserDto.Out signupWithEmailAndPassword(UserDto.In params) {
+    public UserResponseDto signupWithEmailAndPassword(UserDto params) {
         User user = userRepository.findByUsername(params.getEmail());
         if(user != null) {
-            return UserDto.Out
-                    .builder()
-                    .resultCode(400)
-                    .resultMessage("이메일 주소 중복")
-                    .build();
+            return responseUtil.response(UserEnum.DUPLICATE_EMAIL.getCode(), UserEnum.DUPLICATE_EMAIL.getMessage());
         }
 
-        user = User
-                .builder()
+        user = User.builder()
                 .username(params.getEmail())
                 .password(bCryptPasswordEncoder.encode(params.getPassword()))
                 .roles(UserRole.ROLE_USER)
@@ -46,30 +44,17 @@ public class UserServiceImpl implements UserService {
         User checkSave = userRepository.save(user);
 
         if(checkSave != null) {
-            return UserDto.Out
-                    .builder()
-                    .resultCode(200)
-                    .resultMessage("가입 성공")
-                    .build();
+            return responseUtil.response(UserEnum.SUCCESS_SIGNUP.getCode(), UserEnum.SUCCESS_SIGNUP.getMessage());
         } else {
-            return UserDto.Out
-                    .builder()
-                    .resultCode(400)
-                    .resultMessage("가입 실패")
-                    .build();
+            return responseUtil.response(UserEnum.FAILED_SIGNUP.getCode(), UserEnum.FAILED_SIGNUP.getMessage());
         }
     }
 
     @Override
     @Transactional
-    public UserDto.Out logout(Long userId) {
+    public UserResponseDto logout(Long userId) {
         User user = em.find(User.class, userId);
         user.saveUserToken(JwtProperties.EMPTY_STRING);
-
-        return UserDto.Out
-                .builder()
-                .resultCode(0)
-                .resultMessage("로그아웃 완료")
-                .build();
+        return responseUtil.response(UserEnum.SUCCESS_LOGOUT.getCode(), UserEnum.SUCCESS_LOGOUT.getMessage());
     }
 }

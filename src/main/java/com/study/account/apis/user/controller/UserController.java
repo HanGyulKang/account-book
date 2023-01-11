@@ -1,5 +1,6 @@
 package com.study.account.apis.user.controller;
 
+import com.study.account.apis.user.dto.UserResponseDto;
 import com.study.account.apis.user.dto.UserDto;
 import com.study.account.apis.user.service.UserService;
 import com.study.account.common.util.SecurityUtil;
@@ -18,25 +19,20 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDto.Out> signupWithEmailAndPassword(
-            @RequestBody UserDto.In params) {
+    public ResponseEntity<UserResponseDto> signupWithEmailAndPassword(
+            @RequestBody UserDto params) {
 
-        UserDto.Out out = userService.signupWithEmailAndPassword(params);
-        if(out != null && out.getResultCode().equals(HttpStatus.OK.value())) {
-            return new ResponseEntity<>(out, HttpStatus.OK);
+        UserResponseDto response = userService.signupWithEmailAndPassword(params);
+        if(response != null && response.getResultCode().equals(HttpStatus.OK.value())) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(out, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("logout")
-    public ResponseEntity<UserDto.Out> logout() {
-        UserDto.Out out = userService.logout(SecurityUtil.getUserId());
-        return new ResponseEntity<>(out, HttpStatus.NO_CONTENT);
-    }
-
-    @GetMapping("/userId")
-    public Long getUserId() {
-        return SecurityUtil.getUserId();
+    public ResponseEntity<UserResponseDto> logout() {
+        UserResponseDto response = userService.logout(SecurityUtil.getUserId());
+        return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
     }
 }

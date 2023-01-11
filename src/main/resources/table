@@ -1,5 +1,5 @@
-# user table
-create table account.user
+# user table : 유저 테이블
+create table user
 (
     user_id  bigint auto_increment
         primary key,
@@ -13,26 +13,26 @@ create index index_user_username
     on user (username);
 
 
-# account_book table
-create table account.account_book
+# account_book table : 가계부 테이블
+create table account_book
 (
     account_book_id        bigint auto_increment
         primary key,
-    amount                 decimal(19, 2) null,
-    deleted                int            null,
-    memo                   varchar(255)   null,
-    record_date            datetime       null,
-    account_book_detail_id bigint         null,
-    user_id                bigint         null,
+    amount                 decimal(19, 2) default 0.00              null,
+    deleted                int            default 0                 null,
+    memo                   varchar(255)                             null,
+    record_date            datetime       default CURRENT_TIMESTAMP not null,
+    account_book_detail_id bigint                                   null,
+    user_id                bigint                                   null,
     constraint FKd28tps1al2m2ltldpu68oxb27
-        foreign key (account_book_detail_id) references account.account_book_detail (account_book_detail_id),
+        foreign key (account_book_detail_id) references account_book_detail (account_book_detail_id),
     constraint FKkquwu309cpmhm08oyl36f7wp2
-        foreign key (user_id) references account.user (user_id)
+        foreign key (user_id) references user (user_id)
 );
 
 
-# account_book_detail table
-create table account.account_book_detail
+# account_book_detail table : 가계부 상세 테이블
+create table account_book_detail
 (
     account_book_detail_id bigint auto_increment
         primary key,

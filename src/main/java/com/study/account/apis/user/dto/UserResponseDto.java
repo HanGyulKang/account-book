@@ -4,10 +4,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-@Getter
 @Builder
+@Getter
 @ToString
-public class UserDto {
-    private String email;
-    private String password;
+public class UserResponseDto {
+    private Integer resultCode;
+    private String resultMessage;
 }
