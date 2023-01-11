@@ -1,6 +1,7 @@
 package com.study.account.common.config;
 
-import com.study.account.common.CommonFilter;
+import com.study.account.common.filter.CommonFilter;
+import com.study.account.common.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,14 +27,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 사용 x
                 .and()
-                .addFilter(corsFilter) // cross over 요청 허용
-                .formLogin().disable() // form tag 거부
-                .httpBasic().disable() // https 통신으로 id, pw 받기 거부
+                .addFilter(corsFilter) // cors 정책에서 벗어남
+                .formLogin().disable()
+                .httpBasic().disable()
+                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .authorizeRequests()
+                .antMatchers("/apis/v1/user/signup")
+                    .permitAll()
                 .antMatchers("/apis/v1/user/**")
-                    .access("hasRole('USER') or hasRole('ADMIN')")
+                    .access("hasRole('USER')")
                 .antMatchers("/apis/v1/account/**")
-                    .access("hasRole('USER') or hasRole('ADMIN')")
+                    .access("hasRole('USER')")
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()

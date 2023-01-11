@@ -15,9 +15,9 @@ public class CorsConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
         corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.addAllowedOrigin("*");
-        corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.addAllowedOrigin("*"); // 모든 ip에 응답 허용
+        corsConfiguration.addAllowedHeader("*"); // 모든 header에 응답 허용
+        corsConfiguration.addAllowedMethod("*"); // 모든 http method에 응답 허용
 
         // /apis/이하 모두 적용
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/apis/**", corsConfiguration);
