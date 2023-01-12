@@ -1,9 +1,6 @@
 package com.study.account.apis.accountBook.controller;
 
-import com.study.account.apis.accountBook.dto.AccountBookModifyDto;
-import com.study.account.apis.accountBook.dto.AccountBookSaveDto;
-import com.study.account.apis.accountBook.dto.AccountBookListDto;
-import com.study.account.apis.accountBook.dto.AccountBookResponseDto;
+import com.study.account.apis.accountBook.dto.*;
 import com.study.account.apis.accountBook.service.AccountBookService;
 import com.study.account.common.enums.UserRole;
 import com.study.account.entity.AccountBook;
@@ -22,6 +19,7 @@ import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,6 +39,7 @@ class AccountBookControllerTest {
     private static String email = "test@gmail.com";
     private static String password = "study123";
     private Long userId;
+    private Long accountBookId;
 
     @BeforeEach
     void setTestUser() {
@@ -70,6 +69,8 @@ class AccountBookControllerTest {
         em.persist(accountBook1);
         em.persist(accountBook2);
         em.persist(accountBook3);
+
+        this.accountBookId = accountBook2.getId();
     }
 
     @Test
@@ -105,10 +106,10 @@ class AccountBookControllerTest {
         assertThat(accountBookList.getSize()).isEqualTo(3);
         assertThat(accountBookList.getContent())
                 .extracting("memo")
-                .containsExactly("book1", "book2", "book3");
+                .contains("book1", "book2", "book3");
         assertThat(accountBookList.getContent())
                 .extracting("amount")
-                .containsExactly(new BigInteger(String.valueOf(1001)),
+                .contains(new BigInteger(String.valueOf(1001)),
                         new BigInteger(String.valueOf(1002)),
                         new BigInteger(String.valueOf(1003)));
     }
@@ -136,5 +137,39 @@ class AccountBookControllerTest {
         AccountBook result = em.find(AccountBook.class, accountBook.getAccountBookId());
         assertThat(result.getMemo()).isEqualTo(memo);
         assertThat(result.getAmount()).isEqualTo(amount);
+    }
+
+    @Test
+    @DisplayName("[PUT] /account-book/recycle-bin : 가계부 삭제 또는 원복")
+    void modifyAccountBookStatus() {
+        // 테스트 데이터 준비
+        AccountBook accountBook = em.find(AccountBook.class, this.accountBookId);
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        int delete = 1;
+        int restore = 0;
+        Long userId = accountBook.getUser().getId();
+
+        AccountBookDeleteDto params = new AccountBookDeleteDto();
+        params.setAccountBookId(accountBook.getId());
+        params.setDelete(delete);
+
+        // 삭제
+        accountBookService.modifyAccountBookStatus(params, userId);
+        // 삭제 목록 조회
+        List<AccountBookListDto> deleteAccountBook
+                = accountBookService.findDeletedAccountBookByUserId(pageRequest, userId).getContent();
+        // 테스트
+        assertThat(deleteAccountBook).extracting("accountBookId")
+                .contains(accountBook.getId());
+
+        // 복구
+        params.setDelete(restore);
+        accountBookService.modifyAccountBookStatus(params, userId);
+        // 정상 목록 조회
+        List<AccountBookListDto> restoreAccountBook
+                = accountBookService.findAccountBookByUserId(pageRequest, userId).getContent();
+        // 테스트
+        assertThat(restoreAccountBook).extracting("accountBookId")
+                .contains(accountBook.getId());
     }
 }

@@ -1,9 +1,6 @@
 package com.study.account.apis.accountBook.service.impl;
 
-import com.study.account.apis.accountBook.dto.AccountBookModifyDto;
-import com.study.account.apis.accountBook.dto.AccountBookSaveDto;
-import com.study.account.apis.accountBook.dto.AccountBookListDto;
-import com.study.account.apis.accountBook.dto.AccountBookResponseDto;
+import com.study.account.apis.accountBook.dto.*;
 import com.study.account.apis.accountBook.repository.AccountBookRepository;
 import com.study.account.apis.accountBook.service.AccountBookService;
 import com.study.account.apis.accountBook.util.ResponseUtil;
@@ -53,12 +50,25 @@ public class AccountBookServiceImpl implements AccountBookService {
 
     @Override
     public Page<AccountBookListDto> findAccountBookByUserId(Pageable pageable, Long userId) {
-        return accountBookRepository.findAccountBookByUserId(pageable, userId);
+        int deleted = 0;
+        return accountBookRepository.findAccountBookByUserId(pageable, userId, deleted);
     }
 
     @Override
     @Transactional
     public AccountBookResponseDto modifyAccountBook(AccountBookModifyDto params, Long userId) {
         return accountBookRepository.modifyAccountBook(params, userId);
+    }
+
+    @Override
+    public Page<AccountBookListDto> findDeletedAccountBookByUserId(Pageable pageable, Long userId) {
+        int deleted = 1;
+        return accountBookRepository.findAccountBookByUserId(pageable, userId, deleted);
+    }
+
+    @Override
+    @Transactional
+    public AccountBookResponseDto modifyAccountBookStatus(AccountBookDeleteDto params, Long userId) {
+        return accountBookRepository.modifyAccountBookStatus(params, userId);
     }
 }

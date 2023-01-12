@@ -34,7 +34,7 @@ public class AccountBookRepositorySupportImpl extends QuerydslRepositorySupport
     }
 
     @Override
-    public Page<AccountBookListDto> findAccountBookByUserId(Pageable pageable, Long userId) {
+    public Page<AccountBookListDto> findAccountBookByUserId(Pageable pageable, Long userId, Integer deleted) {
         List<AccountBookListDto> results = queryFactory
                 .select(new QAccountBookListDto(
                         accountBook.id.as("accountBookId"),
@@ -52,7 +52,7 @@ public class AccountBookRepositorySupportImpl extends QuerydslRepositorySupport
                 .leftJoin(accountBook.accountBookDetail, accountBookDetail)
                 .where(
                         user.id.eq(userId),
-                        accountBook.deleted.eq(0)
+                        accountBook.deleted.eq(deleted)
                 )
                 .orderBy(accountBook.id.desc(), accountBookDetail.id.asc())
                 .offset(pageable.getOffset())
@@ -76,15 +76,27 @@ public class AccountBookRepositorySupportImpl extends QuerydslRepositorySupport
     @Override
     public AccountBookResponseDto modifyAccountBook(AccountBookModifyDto params, Long userId) {
         AccountBook getAccountBook = getEntityManager().find(AccountBook.class, params.getAccountBookId());
-        User getUser = getEntityManager().find(User.class, userId);
 
-        if(getAccountBook != null && getUser != null && getAccountBook.getUser().equals(getUser)) {
+        if(getAccountBook != null && getAccountBook.getUser().getId() == userId) {
             // Dirty checking
             getAccountBook.modifyAmountOrMemoInAccountBook(
                     params.getAmount() == null ? getAccountBook.getAmount() : params.getAmount(),
                     params.getMemo() == null ? getAccountBook.getMemo() : params.getMemo()
             );
 
+            return responseUtil.response(HttpStatus.OK.value(), HttpStatus.OK.toString());
+        } else {
+            return responseUtil.response(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.toString());
+        }
+    }
+
+    @Override
+    public AccountBookResponseDto modifyAccountBookStatus(AccountBookDeleteDto params, Long userId) {
+        AccountBook getAccountBook = getEntityManager().find(AccountBook.class, params.getAccountBookId());
+
+        if(getAccountBook != null && getAccountBook.getUser().getId() == userId) {
+            // Dirty checking
+            getAccountBook.modifyDeletedInAccountBook(params.getDelete());
             return responseUtil.response(HttpStatus.OK.value(), HttpStatus.OK.toString());
         } else {
             return responseUtil.response(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.toString());

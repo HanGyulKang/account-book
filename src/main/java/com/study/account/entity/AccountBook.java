@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigInteger;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +25,7 @@ public class AccountBook {
     private Integer deleted;
     private LocalDateTime recordDate;
     @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     @JoinColumn(name = "user_id")
     private User user;
     @OneToMany(mappedBy = "accountBook", cascade = CascadeType.ALL)
@@ -33,9 +33,17 @@ public class AccountBook {
     @Builder.Default
     private List<AccountBookDetail> accountBookDetail = new ArrayList<>();
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public void modifyAmountOrMemoInAccountBook(BigInteger amount, String memo) {
         this.amount = amount;
         this.memo = memo;
+    }
+
+    public void modifyDeletedInAccountBook(Integer delete) {
+        this.deleted = delete;
     }
 
 }

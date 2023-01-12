@@ -1,9 +1,6 @@
 package com.study.account.apis.accountBook.controller;
 
-import com.study.account.apis.accountBook.dto.AccountBookModifyDto;
-import com.study.account.apis.accountBook.dto.AccountBookSaveDto;
-import com.study.account.apis.accountBook.dto.AccountBookListDto;
-import com.study.account.apis.accountBook.dto.AccountBookResponseDto;
+import com.study.account.apis.accountBook.dto.*;
 import com.study.account.apis.accountBook.service.AccountBookService;
 import com.study.account.common.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
@@ -63,14 +60,29 @@ public class AccountBookController {
     }
 
     @GetMapping("/account-book/recycle-bin")
-    public String findAccountBookInTheRecycleBin() {
+    public ResponseEntity<Page<AccountBookListDto>> findAccountBookInTheRecycleBin(Pageable pageable) {
         // 삭제한 가계부 조회
-        return "findAccountBookInTheRecycleBin \n";
+        Long userId = SecurityUtil.getUserId();
+        Page<AccountBookListDto> accountBookList = accountBookService.findDeletedAccountBookByUserId(pageable, userId);
+
+        if(!accountBookList.isEmpty()) {
+            return new ResponseEntity<>(accountBookList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        }
     }
 
     @PutMapping("/account-book/recycle-bin")
-    public String modifyAccountBookStatus() {
-        // 삭제할 때도 얘, 복구할 때도 얘
-        return "modifyAccountBookStatus\n";
+    public ResponseEntity<AccountBookResponseDto> modifyAccountBookStatus(
+            @RequestBody AccountBookDeleteDto params) {
+
+        Long userId = SecurityUtil.getUserId();
+        AccountBookResponseDto response = accountBookService.modifyAccountBookStatus(params, userId);
+
+        if(response != null && response.getResultCode().equals(HttpStatus.OK.value())) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+        }
     }
 }
