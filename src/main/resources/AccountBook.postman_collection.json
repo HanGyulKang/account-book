@@ -1,0 +1,387 @@
+{
+	"info": {
+		"_postman_id": "ac5112a9-15de-4ba4-a819-b87bf06bf0eb",
+		"name": "AccountBook",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17335532"
+	},
+	"item": [
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "회원가입",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"gang6607@gmail.com\",\n    \"password\":\"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/apis/v1/user/signup",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"apis",
+								"v1",
+								"user",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "로그인",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"gang6607@gmail.com\",\n    \"password\":\"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "\b로그아웃",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnYW5nNjYwN0BnbWFpbC5jb20iLCJpZCI6MSwiZXhwIjoxNjczNTQ0OTcwLCJ1c2VybmFtZSI6Imdhbmc2NjA3QGdtYWlsLmNvbSJ9.5BPkEgG7k6lY1TCSPCjDP8f_aDMg9IsrOTXy46HjoK2Fgj7O0yA_aKCAhp6HI_aCWMsKxKkZ7sqmJ_5h0N6boQ",
+								"type": "text",
+								"equals": true
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/apis/v1/user/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"apis",
+								"v1",
+								"user",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "account-book",
+			"item": [
+				{
+					"name": "가계부 입력",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnYW5nNjYwN0BnbWFpbC5jb20iLCJpZCI6MSwiZXhwIjoxNjczNTQ1NjY4LCJ1c2VybmFtZSI6Imdhbmc2NjA3QGdtYWlsLmNvbSJ9.gTTU0fz6WG4Eym6aCbEGl9VrdbGnHPaLafJUTyhtQZG44iNmCr3L65NU7u_8KCT-2iOoM97N3Ab2Xn1aSz7_Zw",
+								"type": "text",
+								"equals": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\":140295011,\n    \"memo\":\"test memo4\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/apis/v1/main/account-book",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"apis",
+								"v1",
+								"main",
+								"account-book"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "가계부 목록 조회",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnYW5nNjYwN0BnbWFpbC5jb20iLCJpZCI6MSwiZXhwIjoxNjczNTQ1NjY4LCJ1c2VybmFtZSI6Imdhbmc2NjA3QGdtYWlsLmNvbSJ9.gTTU0fz6WG4Eym6aCbEGl9VrdbGnHPaLafJUTyhtQZG44iNmCr3L65NU7u_8KCT-2iOoM97N3Ab2Xn1aSz7_Zw",
+								"type": "text",
+								"equals": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/apis/v1/main/account-book?page=0&size=10",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"apis",
+								"v1",
+								"main",
+								"account-book"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "삭제한 가계부 목록 조회",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnYW5nNjYwN0BnbWFpbC5jb20iLCJpZCI6MSwiZXhwIjoxNjczNTQ1NjY4LCJ1c2VybmFtZSI6Imdhbmc2NjA3QGdtYWlsLmNvbSJ9.gTTU0fz6WG4Eym6aCbEGl9VrdbGnHPaLafJUTyhtQZG44iNmCr3L65NU7u_8KCT-2iOoM97N3Ab2Xn1aSz7_Zw",
+								"type": "text",
+								"equals": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/apis/v1/main/account-book/recycle-bin?page=0&size=10",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"apis",
+								"v1",
+								"main",
+								"account-book",
+								"recycle-bin"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "가계부 내용 수정",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnYW5nNjYwN0BnbWFpbC5jb20iLCJpZCI6MSwiZXhwIjoxNjczNTQ1NjY4LCJ1c2VybmFtZSI6Imdhbmc2NjA3QGdtYWlsLmNvbSJ9.gTTU0fz6WG4Eym6aCbEGl9VrdbGnHPaLafJUTyhtQZG44iNmCr3L65NU7u_8KCT-2iOoM97N3Ab2Xn1aSz7_Zw",
+								"type": "text",
+								"equals": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountBookId\": 1,\n    \"amount\":1,\n    \"memo\":\"test memo 1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/apis/v1/main/account-book",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"apis",
+								"v1",
+								"main",
+								"account-book"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "\b가계부 삭제, 삭제한 가계부 원복",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnYW5nNjYwN0BnbWFpbC5jb20iLCJpZCI6MSwiZXhwIjoxNjczNTQ1NjY4LCJ1c2VybmFtZSI6Imdhbmc2NjA3QGdtYWlsLmNvbSJ9.gTTU0fz6WG4Eym6aCbEGl9VrdbGnHPaLafJUTyhtQZG44iNmCr3L65NU7u_8KCT-2iOoM97N3Ab2Xn1aSz7_Zw",
+								"type": "text",
+								"equals": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountBookId\": 1,\n    \"delete\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/apis/v1/main/account-book/recycle-bin",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"apis",
+								"v1",
+								"main",
+								"account-book",
+								"recycle-bin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "account-book-detail",
+			"item": [
+				{
+					"name": "가계부 상세 내용 입력",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnYW5nNjYwN0BnbWFpbC5jb20iLCJpZCI6MSwiZXhwIjoxNjczNTQ1NjY4LCJ1c2VybmFtZSI6Imdhbmc2NjA3QGdtYWlsLmNvbSJ9.gTTU0fz6WG4Eym6aCbEGl9VrdbGnHPaLafJUTyhtQZG44iNmCr3L65NU7u_8KCT-2iOoM97N3Ab2Xn1aSz7_Zw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accountBookId\": 1,\n    \"amount\": 2,\n    \"storeName\": \"test store 2\",\n    \"paymentTypes\": \"CASH\",\n    \"paymentDate\": 1642010220\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/apis/v1/detail/account-book",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"apis",
+								"v1",
+								"detail",
+								"account-book"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "가계부 상세 내용 삭제",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJnYW5nNjYwN0BnbWFpbC5jb20iLCJpZCI6MSwiZXhwIjoxNjczNTQ1NjY4LCJ1c2VybmFtZSI6Imdhbmc2NjA3QGdtYWlsLmNvbSJ9.gTTU0fz6WG4Eym6aCbEGl9VrdbGnHPaLafJUTyhtQZG44iNmCr3L65NU7u_8KCT-2iOoM97N3Ab2Xn1aSz7_Zw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/apis/v1/detail/account-book/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"apis",
+								"v1",
+								"detail",
+								"account-book",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
