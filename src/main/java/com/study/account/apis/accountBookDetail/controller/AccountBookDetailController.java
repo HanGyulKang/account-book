@@ -24,7 +24,8 @@ public class AccountBookDetailController {
     public ResponseEntity<AccountBookDetailResponseDto> createAccountBookDetail(
             @RequestBody AccountBookDetailSaveDto params) {
         Long userId = SecurityUtil.getUserId();
-        AccountBookDetailResponseDto response = accountBookDetailService.createAccountBookDetail(params, userId);
+        AccountBookDetailResponseDto response
+                = accountBookDetailService.createAccountBookDetail(params, userId);
 
         if(response != null && response.getResultCode().equals(HttpStatus.OK.value())) {
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -33,9 +34,18 @@ public class AccountBookDetailController {
         }
     }
 
-    @DeleteMapping("/account-book")
+    @DeleteMapping("/account-book/{accountBookDetailId}")
     @Description("가계부 상세 내용 삭제")
-    public String deleteAccountBookDetailByAccountBookDetailId() {
-        return "deleteAccountBookDetailByAccountBookDetailId";
+    public ResponseEntity<AccountBookDetailResponseDto> deleteAccountBookDetailByAccountBookDetailId(
+            @PathVariable Long accountBookDetailId) {
+        Long userId = SecurityUtil.getUserId();
+        AccountBookDetailResponseDto response
+                = accountBookDetailService.deleteAccountBookDetailByAccountBookDetailId(userId, accountBookDetailId);
+
+        if(response != null && response.getResultCode().equals(HttpStatus.OK.value())) {
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
     }
 }

@@ -55,4 +55,19 @@ public class AccountBookDetailServiceImpl implements AccountBookDetailService {
             return responseUtil.response(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.toString());
         }
     }
+
+    @Override
+    @Transactional
+    public AccountBookDetailResponseDto deleteAccountBookDetailByAccountBookDetailId(Long userId, Long accountBookDetailId) {
+        Optional<AccountBookDetail> getAccountBookDetail = accountBookDetailRepository.findById(accountBookDetailId);
+
+        if(getAccountBookDetail.isEmpty()) {
+            return responseUtil.response(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.toString());
+        } else if(userId == getAccountBookDetail.get().getAccountBook().getUser().getId()) {
+            accountBookDetailRepository.delete(getAccountBookDetail.get());
+            return responseUtil.response(HttpStatus.OK.value(), HttpStatus.OK.toString());
+        } else {
+            return responseUtil.response(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.toString());
+        }
+    }
 }

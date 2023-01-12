@@ -5,4 +5,6 @@ import com.study.account.apis.accountBookDetail.dto.AccountBookDetailSaveDto;
 
 public interface AccountBookDetailService {
     AccountBookDetailResponseDto createAccountBookDetail(AccountBookDetailSaveDto params, Long userId);
+
+    AccountBookDetailResponseDto deleteAccountBookDetailByAccountBookDetailId(Long userId, Long accountBookDetailId);
 }
