@@ -33,13 +33,6 @@ public class AccountBookDetailController {
         }
     }
 
-    @GetMapping("/account-book")
-    @Description("가계부 상세 내용 조회")
-    public String findAccountBookByUuidAndAccountBookId() {
-        // 가계부 상세 조회
-        return "findAccountBookByUuidAndAccountBookId\n";
-    }
-
     @DeleteMapping("/account-book")
     @Description("가계부 상세 내용 삭제")
     public String deleteAccountBookDetailByAccountBookDetailId() {
