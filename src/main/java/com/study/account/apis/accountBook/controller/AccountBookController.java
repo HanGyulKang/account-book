@@ -60,8 +60,8 @@ public class AccountBookController {
     }
 
     @GetMapping("/account-book/recycle-bin")
+    @Description("삭제한 가계부 조회")
     public ResponseEntity<Page<AccountBookListDto>> findAccountBookInTheRecycleBin(Pageable pageable) {
-        // 삭제한 가계부 조회
         Long userId = SecurityUtil.getUserId();
         Page<AccountBookListDto> accountBookList = accountBookService.findDeletedAccountBookByUserId(pageable, userId);
 
@@ -73,6 +73,7 @@ public class AccountBookController {
     }
 
     @PutMapping("/account-book/recycle-bin")
+    @Description("가계부 삭제 또는 복구")
     public ResponseEntity<AccountBookResponseDto> modifyAccountBookStatus(
             @RequestBody AccountBookDeleteDto params) {
 
