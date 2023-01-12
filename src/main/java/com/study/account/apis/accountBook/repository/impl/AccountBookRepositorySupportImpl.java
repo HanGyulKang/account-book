@@ -2,18 +2,22 @@ package com.study.account.apis.accountBook.repository.impl;
 
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.study.account.apis.accountBook.dto.AccountBookDto;
 import com.study.account.apis.accountBook.dto.AccountBookListDto;
+import com.study.account.apis.accountBook.dto.AccountBookResponseDto;
 import com.study.account.apis.accountBook.dto.QAccountBookListDto;
 import com.study.account.apis.accountBook.repository.AccountBookRepositorySupport;
-import com.study.account.common.util.SecurityUtil;
+import com.study.account.apis.accountBook.util.ResponseUtil;
 import com.study.account.entity.AccountBook;
+import com.study.account.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.http.HttpStatus;
 
 import javax.persistence.EntityManager;
-
+import javax.transaction.Transactional;
 import java.util.List;
 
 import static com.study.account.entity.QAccountBook.accountBook;
@@ -25,15 +29,15 @@ public class AccountBookRepositorySupportImpl extends QuerydslRepositorySupport
 
     private final JPAQueryFactory queryFactory;
 
+    private static ResponseUtil responseUtil = new ResponseUtil();
+
     public AccountBookRepositorySupportImpl(EntityManager em) {
         super(AccountBook.class);
         this.queryFactory = new JPAQueryFactory(em);
     }
 
     @Override
-    public Page<AccountBookListDto> findAccountBookByUuid(Pageable pageable) {
-        Long userId = SecurityUtil.getUserId();
-
+    public Page<AccountBookListDto> findAccountBookByUuid(Pageable pageable, Long userId) {
         List<AccountBookListDto> results = queryFactory
                 .select(new QAccountBookListDto(
                         accountBook.id.as("accountBookId"),
@@ -69,5 +73,24 @@ public class AccountBookRepositorySupportImpl extends QuerydslRepositorySupport
 
         // limit보다 전체 count가 작으면(=마지막 페이지) count query 호출x 자동화
         return PageableExecutionUtils.getPage(results, pageable, countQuery::fetchCount);
+    }
+
+    @Override
+    @Transactional
+    public AccountBookResponseDto modifyAccountBook(AccountBookDto params, Long userId) {
+        AccountBook getAccountBook = getEntityManager().find(AccountBook.class, params.getAccountBookId());
+        User getUser = getEntityManager().find(User.class, userId);
+
+        if(getAccountBook.getUser().equals(getUser)) {
+            // Dirty checking
+            getAccountBook.modifyAmountOrMemoInAccountBook(
+                    params.getAmount() == null ? getAccountBook.getAmount() : params.getAmount(),
+                    params.getMemo() == null ? getAccountBook.getMemo() : params.getMemo()
+            );
+
+            return responseUtil.response(HttpStatus.OK.value(), HttpStatus.OK.toString());
+        } else {
+            return responseUtil.response(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.toString());
+        }
     }
 }

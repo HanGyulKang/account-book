@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @ToString
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(name = "user", indexes = @Index(name = "index_user_username", columnList = "username"))
 public class User {
@@ -30,6 +30,7 @@ public class User {
     private UserRole roles;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @ToString.Exclude
+    @Builder.Default
     private List<AccountBook> accountBooks = new ArrayList<>();
 
     public List<String> getRoleList() {

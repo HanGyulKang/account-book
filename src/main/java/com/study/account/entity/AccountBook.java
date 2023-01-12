@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @Getter
 @ToString
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class AccountBook {
 
@@ -30,6 +30,12 @@ public class AccountBook {
     private User user;
     @OneToMany(mappedBy = "accountBook", cascade = CascadeType.ALL)
     @ToString.Exclude
+    @Builder.Default
     private List<AccountBookDetail> accountBookDetail = new ArrayList<>();
+
+    public void modifyAmountOrMemoInAccountBook(BigInteger amount, String memo) {
+        this.amount = amount;
+        this.memo = memo;
+    }
 
 }

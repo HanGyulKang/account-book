@@ -10,7 +10,6 @@ import com.study.account.apis.user.repository.UserRepository;
 import com.study.account.entity.AccountBook;
 import com.study.account.entity.User;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -53,7 +51,12 @@ public class AccountBookServiceImpl implements AccountBookService {
     }
 
     @Override
-    public Page<AccountBookListDto> findAccountBookByUuid(Pageable pageable) {
-        return accountBookRepository.findAccountBookByUuid(pageable);
+    public Page<AccountBookListDto> findAccountBookByUuid(Pageable pageable, Long userId) {
+        return accountBookRepository.findAccountBookByUuid(pageable, userId);
+    }
+
+    @Override
+    public AccountBookResponseDto modifyAccountBook(AccountBookDto params, Long userId) {
+        return accountBookRepository.modifyAccountBook(params, userId);
     }
 }
