@@ -5,9 +5,7 @@ import lombok.Data;
 import java.math.BigInteger;
 
 @Data
-public class AccountBookDto {
-    private Long accountBookId;
+public class AccountBookSaveDto {
     private BigInteger amount;
     private String memo;
-    private Integer deleted;
 }

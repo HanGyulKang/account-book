@@ -2,10 +2,7 @@ package com.study.account.apis.accountBook.repository.impl;
 
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.study.account.apis.accountBook.dto.AccountBookDto;
-import com.study.account.apis.accountBook.dto.AccountBookListDto;
-import com.study.account.apis.accountBook.dto.AccountBookResponseDto;
-import com.study.account.apis.accountBook.dto.QAccountBookListDto;
+import com.study.account.apis.accountBook.dto.*;
 import com.study.account.apis.accountBook.repository.AccountBookRepositorySupport;
 import com.study.account.apis.accountBook.util.ResponseUtil;
 import com.study.account.entity.AccountBook;
@@ -77,7 +74,7 @@ public class AccountBookRepositorySupportImpl extends QuerydslRepositorySupport
 
     @Override
     @Transactional
-    public AccountBookResponseDto modifyAccountBook(AccountBookDto params, Long userId) {
+    public AccountBookResponseDto modifyAccountBook(AccountBookModifyDto params, Long userId) {
         AccountBook getAccountBook = getEntityManager().find(AccountBook.class, params.getAccountBookId());
         User getUser = getEntityManager().find(User.class, userId);
 

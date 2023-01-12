@@ -1,12 +1,14 @@
 package com.study.account.apis.accountBook.controller;
 
-import com.study.account.apis.accountBook.dto.AccountBookDto;
+import com.study.account.apis.accountBook.dto.AccountBookModifyDto;
+import com.study.account.apis.accountBook.dto.AccountBookSaveDto;
 import com.study.account.apis.accountBook.dto.AccountBookListDto;
 import com.study.account.apis.accountBook.dto.AccountBookResponseDto;
 import com.study.account.apis.accountBook.service.AccountBookService;
 import com.study.account.common.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Description;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,7 @@ public class AccountBookController {
     private final AccountBookService accountBookService;
 
     @GetMapping("/account-book")
+    @Description("가계부 전체 조회")
     public ResponseEntity<Page<AccountBookListDto>> findAccountBookByUuid(Pageable pageable) {
         Long userId = SecurityUtil.getUserId();
         Page<AccountBookListDto> accountBookList = accountBookService.findAccountBookByUuid(pageable, userId);
@@ -34,7 +37,8 @@ public class AccountBookController {
     }
 
     @PostMapping("/account-book")
-    public ResponseEntity<AccountBookResponseDto> createAccountBook(@RequestBody AccountBookDto params) {
+    @Description("가계부 입력")
+    public ResponseEntity<AccountBookResponseDto> createAccountBook(@RequestBody AccountBookSaveDto params) {
         AccountBookResponseDto response = accountBookService.createAccountBook(params, SecurityUtil.getUserId());
 
         if(response != null && response.getResultCode().equals(HttpStatus.OK.value())) {
@@ -45,7 +49,8 @@ public class AccountBookController {
     }
 
     @PutMapping("/account-book")
-    public ResponseEntity<AccountBookResponseDto> modifyAccountBook(@RequestBody AccountBookDto params) {
+    @Description("가계부 내용 수정(금액, 메모)")
+    public ResponseEntity<AccountBookResponseDto> modifyAccountBook(@RequestBody AccountBookModifyDto params) {
         AccountBookResponseDto response = accountBookService.modifyAccountBook(params, SecurityUtil.getUserId());
 
         if(response != null && response.getResultCode().equals(HttpStatus.OK.value())) {
@@ -56,6 +61,7 @@ public class AccountBookController {
     }
 
     @PostMapping("/account-book/detail")
+    @Description("가계부 상세 내용 입력")
     public String createAccountBookDetail() {
         // 가계부 상세 내역 생성
         return "createAccountBookDetail\n";

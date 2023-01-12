@@ -1,6 +1,7 @@
 package com.study.account.apis.accountBook.service.impl;
 
-import com.study.account.apis.accountBook.dto.AccountBookDto;
+import com.study.account.apis.accountBook.dto.AccountBookModifyDto;
+import com.study.account.apis.accountBook.dto.AccountBookSaveDto;
 import com.study.account.apis.accountBook.dto.AccountBookListDto;
 import com.study.account.apis.accountBook.dto.AccountBookResponseDto;
 import com.study.account.apis.accountBook.repository.AccountBookRepository;
@@ -29,7 +30,7 @@ public class AccountBookServiceImpl implements AccountBookService {
 
     @Override
     @Transactional
-    public AccountBookResponseDto createAccountBook(AccountBookDto params, Long userId) {
+    public AccountBookResponseDto createAccountBook(AccountBookSaveDto params, Long userId) {
         User user = userRepository.findById(userId).get();
 
         AccountBook accountBook = AccountBook
@@ -56,7 +57,7 @@ public class AccountBookServiceImpl implements AccountBookService {
     }
 
     @Override
-    public AccountBookResponseDto modifyAccountBook(AccountBookDto params, Long userId) {
+    public AccountBookResponseDto modifyAccountBook(AccountBookModifyDto params, Long userId) {
         return accountBookRepository.modifyAccountBook(params, userId);
     }
 }

@@ -1,6 +1,7 @@
 package com.study.account.apis.accountBook.controller;
 
-import com.study.account.apis.accountBook.dto.AccountBookDto;
+import com.study.account.apis.accountBook.dto.AccountBookModifyDto;
+import com.study.account.apis.accountBook.dto.AccountBookSaveDto;
 import com.study.account.apis.accountBook.dto.AccountBookListDto;
 import com.study.account.apis.accountBook.dto.AccountBookResponseDto;
 import com.study.account.apis.accountBook.service.AccountBookService;
@@ -80,7 +81,7 @@ class AccountBookControllerTest {
         String memo = "testMemo";
 
         // 테스트 데이터 입력
-        AccountBookDto params = new AccountBookDto();
+        AccountBookSaveDto params = new AccountBookSaveDto();
         params.setAmount(amount);
         params.setMemo(memo);
 
@@ -123,7 +124,7 @@ class AccountBookControllerTest {
         Page<AccountBookListDto> accountBookList = accountBookService.findAccountBookByUuid(pageRequest, this.userId);
         AccountBookListDto accountBook = accountBookList.getContent().get(0);
 
-        AccountBookDto params = new AccountBookDto();
+        AccountBookModifyDto params = new AccountBookModifyDto();
         params.setAccountBookId(accountBook.getAccountBookId());
         params.setMemo(memo);
         params.setAmount(amount);
@@ -135,6 +136,5 @@ class AccountBookControllerTest {
         AccountBook result = em.find(AccountBook.class, accountBook.getAccountBookId());
         assertThat(result.getMemo()).isEqualTo(memo);
         assertThat(result.getAmount()).isEqualTo(amount);
-
     }
 }
