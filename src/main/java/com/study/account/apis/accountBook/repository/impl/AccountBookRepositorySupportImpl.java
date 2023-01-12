@@ -34,7 +34,7 @@ public class AccountBookRepositorySupportImpl extends QuerydslRepositorySupport
     }
 
     @Override
-    public Page<AccountBookListDto> findAccountBookByUuid(Pageable pageable, Long userId) {
+    public Page<AccountBookListDto> findAccountBookByUserId(Pageable pageable, Long userId) {
         List<AccountBookListDto> results = queryFactory
                 .select(new QAccountBookListDto(
                         accountBook.id.as("accountBookId"),
@@ -54,6 +54,7 @@ public class AccountBookRepositorySupportImpl extends QuerydslRepositorySupport
                         user.id.eq(userId),
                         accountBook.deleted.eq(0)
                 )
+                .orderBy(accountBook.id.desc(), accountBookDetail.id.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -73,7 +74,6 @@ public class AccountBookRepositorySupportImpl extends QuerydslRepositorySupport
     }
 
     @Override
-    @Transactional
     public AccountBookResponseDto modifyAccountBook(AccountBookModifyDto params, Long userId) {
         AccountBook getAccountBook = getEntityManager().find(AccountBook.class, params.getAccountBookId());
         User getUser = getEntityManager().find(User.class, userId);

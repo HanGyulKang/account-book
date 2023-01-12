@@ -52,11 +52,12 @@ public class AccountBookServiceImpl implements AccountBookService {
     }
 
     @Override
-    public Page<AccountBookListDto> findAccountBookByUuid(Pageable pageable, Long userId) {
-        return accountBookRepository.findAccountBookByUuid(pageable, userId);
+    public Page<AccountBookListDto> findAccountBookByUserId(Pageable pageable, Long userId) {
+        return accountBookRepository.findAccountBookByUserId(pageable, userId);
     }
 
     @Override
+    @Transactional
     public AccountBookResponseDto modifyAccountBook(AccountBookModifyDto params, Long userId) {
         return accountBookRepository.modifyAccountBook(params, userId);
     }

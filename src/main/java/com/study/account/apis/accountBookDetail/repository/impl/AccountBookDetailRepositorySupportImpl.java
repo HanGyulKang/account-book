@@ -16,4 +16,5 @@ public class AccountBookDetailRepositorySupportImpl extends QuerydslRepositorySu
         super(AccountBookDetail.class);
         this.jpaQueryFactory = new JPAQueryFactory(em);
     }
+
 }

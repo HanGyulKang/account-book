@@ -96,12 +96,12 @@ class AccountBookControllerTest {
 
     @Test
     @DisplayName("[GET] /apis/v1/account-book : 가계부 내용 조회")
-    void findAccountBookByUuid() {
+    void findAccountBookByUserId() {
         // 페이지 준비
         PageRequest pageRequest = PageRequest.of(0, 3);
 
         // 조회 테스트
-        Page<AccountBookListDto> accountBookList = accountBookService.findAccountBookByUuid(pageRequest, this.userId);
+        Page<AccountBookListDto> accountBookList = accountBookService.findAccountBookByUserId(pageRequest, this.userId);
         assertThat(accountBookList.getSize()).isEqualTo(3);
         assertThat(accountBookList.getContent())
                 .extracting("memo")
@@ -121,7 +121,7 @@ class AccountBookControllerTest {
         BigInteger amount = new BigInteger(String.valueOf(1111));
         String memo = "book1 modify";
 
-        Page<AccountBookListDto> accountBookList = accountBookService.findAccountBookByUuid(pageRequest, this.userId);
+        Page<AccountBookListDto> accountBookList = accountBookService.findAccountBookByUserId(pageRequest, this.userId);
         AccountBookListDto accountBook = accountBookList.getContent().get(0);
 
         AccountBookModifyDto params = new AccountBookModifyDto();

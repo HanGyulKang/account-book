@@ -9,6 +9,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface AccountBookService {
     AccountBookResponseDto createAccountBook(AccountBookSaveDto params, Long userId);
-    Page<AccountBookListDto> findAccountBookByUuid(Pageable pageable, Long userId);
+    Page<AccountBookListDto> findAccountBookByUserId(Pageable pageable, Long userId);
     AccountBookResponseDto modifyAccountBook(AccountBookModifyDto params, Long userId);
 }

@@ -25,9 +25,9 @@ public class AccountBookController {
 
     @GetMapping("/account-book")
     @Description("가계부 전체 조회")
-    public ResponseEntity<Page<AccountBookListDto>> findAccountBookByUuid(Pageable pageable) {
+    public ResponseEntity<Page<AccountBookListDto>> findAccountBookByUserId(Pageable pageable) {
         Long userId = SecurityUtil.getUserId();
-        Page<AccountBookListDto> accountBookList = accountBookService.findAccountBookByUuid(pageable, userId);
+        Page<AccountBookListDto> accountBookList = accountBookService.findAccountBookByUserId(pageable, userId);
 
         if(!accountBookList.isEmpty()) {
             return new ResponseEntity<>(accountBookList, HttpStatus.OK);
@@ -38,7 +38,8 @@ public class AccountBookController {
 
     @PostMapping("/account-book")
     @Description("가계부 입력")
-    public ResponseEntity<AccountBookResponseDto> createAccountBook(@RequestBody AccountBookSaveDto params) {
+    public ResponseEntity<AccountBookResponseDto> createAccountBook(
+            @RequestBody AccountBookSaveDto params) {
         AccountBookResponseDto response = accountBookService.createAccountBook(params, SecurityUtil.getUserId());
 
         if(response != null && response.getResultCode().equals(HttpStatus.OK.value())) {
@@ -50,7 +51,8 @@ public class AccountBookController {
 
     @PutMapping("/account-book")
     @Description("가계부 내용 수정(금액, 메모)")
-    public ResponseEntity<AccountBookResponseDto> modifyAccountBook(@RequestBody AccountBookModifyDto params) {
+    public ResponseEntity<AccountBookResponseDto> modifyAccountBook(
+            @RequestBody AccountBookModifyDto params) {
         AccountBookResponseDto response = accountBookService.modifyAccountBook(params, SecurityUtil.getUserId());
 
         if(response != null && response.getResultCode().equals(HttpStatus.OK.value())) {
