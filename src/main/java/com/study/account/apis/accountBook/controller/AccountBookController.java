@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/apis/v1")
+@RequestMapping("/apis/v1/main")
 public class AccountBookController {
 
     private final AccountBookService accountBookService;
@@ -58,19 +58,6 @@ public class AccountBookController {
         } else {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
-    }
-
-    @PostMapping("/account-book/detail")
-    @Description("가계부 상세 내용 입력")
-    public String createAccountBookDetail() {
-        // 가계부 상세 내역 생성
-        return "createAccountBookDetail\n";
-    }
-
-    @GetMapping("/account-book/detail")
-    public String findAccountBookByUuidAndAccountBookId() {
-        // 가계부 상세 조회
-        return "findAccountBookByUuidAndAccountBookId\n";
     }
 
     @GetMapping("/account-book/recycle-bin")

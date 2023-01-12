@@ -78,7 +78,7 @@ public class AccountBookRepositorySupportImpl extends QuerydslRepositorySupport
         AccountBook getAccountBook = getEntityManager().find(AccountBook.class, params.getAccountBookId());
         User getUser = getEntityManager().find(User.class, userId);
 
-        if(getAccountBook.getUser().equals(getUser)) {
+        if(getAccountBook != null && getUser != null && getAccountBook.getUser().equals(getUser)) {
             // Dirty checking
             getAccountBook.modifyAmountOrMemoInAccountBook(
                     params.getAmount() == null ? getAccountBook.getAmount() : params.getAmount(),
