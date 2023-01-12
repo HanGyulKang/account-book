@@ -1,9 +1,10 @@
 version: "3.7"
 
 services:
-  db-mysql:
+  account_database:
     image: mysql:5.7
     platform: linux/amd64
+    container_name: account_db
     environment:
       MYSQL_DATABASE: account
       MYSQL_USER: user
@@ -13,22 +14,27 @@ services:
     ports:
       - "3306:3306"
     networks:
-      - app-db-network
+      - account_network
 
-  account-app:
-    platform: linux/amd64
+  account_application:
     build:
       context: ./
-      args:
-        ENVIRONMENT: real
       dockerfile: Dockerfile
+    restart: always
+    platform: linux/amd64
     ports:
       - "8080:8080"
     depends_on:
-      - db-mysql
+      - account_database
+    container_name: account_app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://account_database:3306/account
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: user
     networks:
-      - app-db-network
+      - account_network
 
 networks:
-  app-db-network:
+  account_network:
     driver: bridge
+

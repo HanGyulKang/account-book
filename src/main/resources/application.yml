@@ -66,9 +66,7 @@ spring:
       on-profile: real
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://db-mysql:3306/account
-    username: user
-    password: user
+    # 나머지 정보는 docker-compose서 로드
 
   jpa:
     hibernate:
