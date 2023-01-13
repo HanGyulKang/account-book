@@ -1,5 +1,9 @@
 version: "3.7"
 
+# 최초 실행 순서
+# 1. Gradle bootJar run
+# 2. docker-compose up
+
 services:
   account_database:
     image: mysql:5.7
