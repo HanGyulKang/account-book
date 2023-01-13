@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Description;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
@@ -23,6 +25,13 @@ public class AccountApplication {
     @GetMapping("/healthCheck")
     public String healthCheck() {
         return "health : " + env + "\n";
+    }
+
+    @PostMapping("/login")
+    @Description("로그인")
+    public void login() {
+        // Spring security의 login을 사용하기 때문에 실제로 사용 되지는 않음
+        // 형식상 만들어 둠
     }
 
     public static void main(String[] args) {
