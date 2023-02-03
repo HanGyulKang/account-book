@@ -188,7 +188,7 @@
 ## 테스트 
 * /test/java/com/study/account 이하에 각 기능별로 작성해두었습니다.
   
-org.assertj.core.api.Assertions 를 사용하여 모든 값이 설계한대로 나오는지 테스트를 진행하였습니다.
+Junit으로 작성하고 Assertions로 검증하였습니다.
 
 ---
 
