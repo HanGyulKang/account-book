@@ -1,6 +1,6 @@
 # Account Book
 ### 어쩌다보니 슬퍼지게 된 가계부
-#### 역시 JDBC mapping보다 ORM이 재밌어...
+#### 역시 JDBC mapping보다 ORM이 재밌어..
 
 ---
 
